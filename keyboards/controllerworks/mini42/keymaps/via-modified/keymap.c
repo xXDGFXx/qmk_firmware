@@ -115,6 +115,107 @@ const char* states[8] = {
 };
 
 
+char * get_rgb_mode(void) {
+    if ( !rgb_matrix_is_enabled() ) {
+        return "OFF";
+    }
+
+    switch ( rgb_matrix_get_mode() ) {
+        case RGB_MATRIX_SOLID_COLOR:
+            return "Solid Color";
+        case RGB_MATRIX_ALPHAS_MODS:
+            return "Alphas Mods";
+        case RGB_MATRIX_GRADIENT_UP_DOWN:
+            return "Grad Up Down";
+        case RGB_MATRIX_GRADIENT_LEFT_RIGHT:
+            return "Grad Left Right";
+        case RGB_MATRIX_BREATHING:
+            return "Breathing";
+        case RGB_MATRIX_BAND_SAT:
+            return "Band Sat";
+        case RGB_MATRIX_BAND_VAL:
+            return "Band Val";
+        case RGB_MATRIX_BAND_PINWHEEL_SAT:
+            return "Band Pinwheel Sat";
+        case RGB_MATRIX_BAND_PINWHEEL_VAL:
+            return "Band Pinwheel Val";
+        case RGB_MATRIX_BAND_SPIRAL_SAT:
+            return "Band Spiral Sat";
+        case RGB_MATRIX_BAND_SPIRAL_VAL:
+            return "Band Spiral Val";
+        case RGB_MATRIX_CYCLE_ALL:
+            return "Cycle All";
+        case RGB_MATRIX_CYCLE_LEFT_RIGHT:
+            return "Cycle L-R";
+        case RGB_MATRIX_CYCLE_UP_DOWN:
+            return "Cycle U-D";
+        case RGB_MATRIX_CYCLE_OUT_IN:
+            return "Cycle O-I";
+        case RGB_MATRIX_CYCLE_OUT_IN_DUAL:
+            return "Cycle O-I Dual";
+        case RGB_MATRIX_RAINBOW_MOVING_CHEVRON:
+            return "Rnbw Moving Chevron";
+        case RGB_MATRIX_CYCLE_PINWHEEL:
+            return "Cycle Pinwheel";
+        case RGB_MATRIX_CYCLE_SPIRAL:
+            return "Cycle Spiral";
+        case RGB_MATRIX_DUAL_BEACON:
+            return "Dual Beacon";
+        case RGB_MATRIX_RAINBOW_BEACON:
+            return "Rnbw Beacon";
+        case RGB_MATRIX_RAINBOW_PINWHEELS:
+            return "Rnbw Pinwheels";
+        case RGB_MATRIX_RAINDROPS:
+            return "Raindrops";
+        case RGB_MATRIX_JELLYBEAN_RAINDROPS:
+            return "Jellybean Raindrops";
+        case RGB_MATRIX_HUE_BREATHING:
+            return "Hue Breathing";
+        case RGB_MATRIX_HUE_PENDULUM:
+            return "Hue Pendulum";
+        case RGB_MATRIX_HUE_WAVE:
+            return "Hue Wave";
+        case RGB_MATRIX_PIXEL_FRACTAL:
+            return "Pixel Fractal";
+        case RGB_MATRIX_PIXEL_FLOW:
+            return "Pixel Flow";
+        case RGB_MATRIX_PIXEL_RAIN:
+            return "Pixel Rain";
+        case RGB_MATRIX_TYPING_HEATMAP:
+            return "Typing Heatmap";
+        case RGB_MATRIX_DIGITAL_RAIN:
+            return "Digital Rain";
+        case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
+            return "Solid React Simple";
+        case RGB_MATRIX_SOLID_REACTIVE:
+            return "Solid React";
+        case RGB_MATRIX_SOLID_REACTIVE_WIDE:
+            return "Solid React Wide";
+        case RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE:
+            return "Solid React Multiwide";
+        case RGB_MATRIX_SOLID_REACTIVE_CROSS:
+            return "Solid React Cross";
+        case RGB_MATRIX_SOLID_REACTIVE_MULTICROSS:
+            return "Solid React Multicross";
+        case RGB_MATRIX_SOLID_REACTIVE_NEXUS:
+            return "Solid React Nexus";
+        case RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS:
+            return "Solid React Multinexus";
+        case RGB_MATRIX_SPLASH:
+            return "Splash";
+        case RGB_MATRIX_MULTISPLASH:
+            return "Multisplash";
+        case RGB_MATRIX_SOLID_SPLASH:
+            return "Solid Splash";
+        case RGB_MATRIX_SOLID_MULTISPLASH:
+            return "Solid Multisplash";
+        case RGB_MATRIX_EFFECT_MAX:
+            return "Effect Max";
+        default:
+            return "None";
+    }
+}
+
 // Render left OLED
 bool render_status_user(void) {
     // print wpm
@@ -132,9 +233,16 @@ bool render_status_user(void) {
     //oled_write_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
     //oled_write_P(led_state.scroll_lock ? PSTR("SCR ") : PSTR("    "), false);
 
+    // TODO: Move this onto the WPM Line
     oled_write_P(led_state.num_lock ? PSTR("[N] ") : PSTR("    "), false);
     oled_write_P(led_state.caps_lock ? PSTR("[C] ") : PSTR("    "), false);
     oled_write_P(led_state.scroll_lock ? PSTR("[S] ") : PSTR("    "), false);
+    oled_write_P(PSTR("\n"), false);
+
+    const char* rgb_mode = get_rgb_mode();
+    const uint8_t offset = oled_max_chars() - strlen(rgb_mode);
+    oled_set_cursor(offset, 0);
+    oled_write_P(PSTR(rgb_mode), false);
     return false;
 }
 

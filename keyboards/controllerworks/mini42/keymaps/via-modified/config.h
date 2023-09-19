@@ -22,7 +22,7 @@
  * Mod-tap adjustments
  */
 #define QUICK_TAP_TERM 120
-#define TAPPING_TERM 200
+#define TAPPING_TERM 185
 #define PERMISSIVE_HOLD
 
 /*
