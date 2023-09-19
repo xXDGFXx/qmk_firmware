@@ -236,7 +236,8 @@ bool render_status_user(void) {
 
     uint8_t i;
     uint8_t offset = 0;
-    for (i = 0; i < sizeof(indicators); i++ ) {
+    uint8_t arr_len = (uint8_t) sizeof(indicators) / sizeof(indicators[0]);
+    for (i = 0; i < arr_len; i++ ) {
         if ( strlen(indicators[i]) ) {
             offset = offset + strlen(indicators[i]);
         }
@@ -245,9 +246,12 @@ bool render_status_user(void) {
     if ( offset > 0 ) {
         offset = oled_max_chars() - offset;
         oled_set_cursor(0, offset);
-        for (i = 0; i < sizeof(indicators); i++ ) {
+        for (i = 0; i < arr_len; i++) {
             if ( strlen(indicators[i]) ) {
                 oled_write_P(PSTR(indicators[i]), false);
+                if ( i != arr_len - 1 ) {
+                    oled_write_P(PSTR(" "), false);
+                }
             }
         }
         oled_write_P("\n", false);
@@ -260,13 +264,11 @@ bool render_status_user(void) {
     oled_write_P(PSTR(state), false);
     oled_write_P(PSTR("\n"), false);
 
-    //oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("    "), false);
-    //oled_write_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
-    //oled_write_P(led_state.scroll_lock ? PSTR("SCR ") : PSTR("    "), false);
-
-
     const char* rgb_mode = get_rgb_mode();
+    oled_write_P(PSTR("RGB: "), false);
     oled_write_P(PSTR(rgb_mode), false);
+    oled_write_P(PSTR("\n"), false);
+
     return false;
 }
 
