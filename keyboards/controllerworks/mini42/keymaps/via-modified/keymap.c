@@ -222,26 +222,50 @@ bool render_status_user(void) {
     sprintf(wpm, "WPM: %03d\n", get_current_wpm());
     oled_write(wpm, false);
 
+    char* indicators[3] = { "","","" };
+    led_t led_state = host_keyboard_led_state();
+    if ( led_state.num_lock ) {
+        indicators[0] = "[N] ";
+    }
+    if (led_state.caps_lock ) {
+        indicators[1] = "[C] ";
+    }
+    if ( led_state.scroll_lock ) {
+        indicators[2] = "[S] ";
+    }
+
+    uint8_t i;
+    uint8_t offset = 0;
+    for (i = 0; i < sizeof(indicators); i++ ) {
+        if ( strlen(indicators[i]) ) {
+            offset = offset + strlen(indicators[i]);
+        }
+    }
+
+    if ( offset > 0 ) {
+        offset = oled_max_chars() - offset;
+        oled_set_cursor(0, offset);
+        for (i = 0; i < sizeof(indicators); i++ ) {
+            if ( strlen(indicators[i]) ) {
+                oled_write_P(PSTR(indicators[i]), false);
+            }
+        }
+        oled_write_P("\n", false);
+    }
+
     oled_write_P(PSTR("Layer: "), false);
+
     const int layer_idx = get_highest_layer(layer_state);
     const char* state = states[layer_idx];
     oled_write_P(PSTR(state), false);
     oled_write_P(PSTR("\n"), false);
 
-    led_t led_state = host_keyboard_led_state();
     //oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("    "), false);
     //oled_write_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
     //oled_write_P(led_state.scroll_lock ? PSTR("SCR ") : PSTR("    "), false);
 
-    // TODO: Move this onto the WPM Line
-    oled_write_P(led_state.num_lock ? PSTR("[N] ") : PSTR("    "), false);
-    oled_write_P(led_state.caps_lock ? PSTR("[C] ") : PSTR("    "), false);
-    oled_write_P(led_state.scroll_lock ? PSTR("[S] ") : PSTR("    "), false);
-    oled_write_P(PSTR("\n"), false);
 
     const char* rgb_mode = get_rgb_mode();
-    const uint8_t offset = oled_max_chars() - strlen(rgb_mode);
-    oled_set_cursor(offset, 0);
     oled_write_P(PSTR(rgb_mode), false);
     return false;
 }
