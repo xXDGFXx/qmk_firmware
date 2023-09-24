@@ -1,28 +1,46 @@
 #include "enums.h"
 
-const uint8_t encoder_mapping[][2][2] = {
-    [_QWERTY] = {{ KC_VOLU, KC_VOLD }, { KC_PGDN, KC_PGUP} },
-    [_NAV] = {{ KC_VOLU, KC_VOLD }, { KC_PGDN, KC_PGUP} },
-    [_SYM] = {{ KC_VOLU, KC_VOLD }, { KC_PGDN, KC_PGUP} },
-    [_FUNCTION] = {{ KC_VOLU, KC_VOLD }, { KC_PGDN, KC_PGUP} },
-    [_ADJUST] = {{ KC_VOLU, KC_VOLD }, { KC_PGDN, KC_PGUP} },
+const uint16_t encoder_mapping[][2][3] = {
+    [_QWERTY] = {{ KC_VOLU, KC_VOLD, 0 }, { KC_PGDN, KC_PGUP, 0} },
+    [_NAV] = {{ LCA(KC_RIGHT), LCA(KC_LEFT), 1 }, { LCTL(KC_PLUS), LCTL(KC_MINUS),1} },
+    [_SYM] = {{ KC_VOLU, KC_VOLD,0 }, { KC_PGDN, KC_PGUP, 0} },
+    [_FUNCTION] = {{ KC_VOLU, KC_VOLD,0 }, { KC_PGDN, KC_PGUP,0} },
+    [_ADJUST] = {{ KC_VOLU, KC_VOLD,0 }, { KC_PGDN, KC_PGUP,0} },
 };
 
 
-bool activate_encoder(const uint8_t encoder_map[2][2], uint8_t index, bool clockwise) {
+bool activate_encoder(const uint16_t encoder_map[2][3], uint8_t index, bool clockwise) {
     if (index == 0) {
-        // Volume control
         if (clockwise) {
-            tap_code(encoder_map[0][0]);
+            if (encoder_map[0][2] ) {
+                tap_code16(encoder_map[0][0]);
+            }
+            else {
+                tap_code((uint8_t) encoder_map[0][0]);
+            }
         } else {
-            tap_code(encoder_map[0][1]);
+            if (encoder_map[0][2] ) {
+                tap_code16(encoder_map[0][1]);
+            }
+            else {
+                tap_code((uint8_t) encoder_map[0][1]);
+            }
         }
     } else if (index == 1) {
-        // Page up/Page down
         if (clockwise) {
-            tap_code(encoder_map[1][0]);
+            if (encoder_map[1][2] ) {
+                tap_code16(encoder_map[1][0]);
+            }
+            else {
+                tap_code((uint8_t) encoder_map[1][0]);
+            }
         } else {
-            tap_code(encoder_map[1][1]);
+            if (encoder_map[1][2] ) {
+                tap_code16(encoder_map[1][1]);
+            }
+            else {
+                tap_code((uint8_t) encoder_map[1][1]);
+            }
         }
     }
 
