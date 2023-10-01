@@ -124,9 +124,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_SYM] = LAYOUT(
-      KC_GRV ,   KC_1 ,   KC_2 ,   KC_3 ,   KC_4 ,   KC_5 ,                                         KC_6 ,   KC_7 ,   KC_8 ,   KC_9 ,   KC_0 , KC_EQL,
-     KC_TILD , KC_EXLM,  SYM_LSFT , SYM_LCTL,  SYM_LALT, KC_EQL,                              KC_PLUS, SYM_RALT, SYM_RCTL, SYM_RSFT, KC_COLN, KC_PIPE,
-     KC_PIPE , KC_AT, KC_RBRC, KC_RPRN, KC_RCBR, KC_UNDS, KC_LCBR, _______, _______, KC_RCBR, KC_MINUS, KC_UNDS, KC_COMM,  KC_DOT, KC_SLSH, KC_QUES,
+      KC_GRV ,   KC_EXLM ,   KC_AT ,   KC_HASH ,   KC_DOLLAR ,   KC_PERCENT ,                                         KC_CIRC ,   KC_AMPERSAND ,   KC_ASTERISK ,   KC_9 ,   KC_0 , KC_EQL,
+     KC_TILD , KC_EXLM,  KC_LBRC , KC_LPRN,  KC_LCBR, KC_EQL,                              KC_PLUS, KC_UNDS, KC_LABK, KC_RABK, KC_COLN, KC_PIPE,
+     KC_PIPE , KC_AT, KC_RBRC, KC_RPRN, KC_RCBR, KC_UNDS, KC_LCBR, _______, _______, KC_HASH, KC_MINUS, KC_UNDS, KC_COMM,  KC_DOT, KC_SLSH, KC_QUES,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
@@ -242,10 +242,13 @@ bool achordion_chord(uint16_t tap_hold_keycode,
             }
             break;
 
-        case HOME_D:
+        case HOME_D: // CTRL + <special key>
             if (
                 (other_keycode == KC_T)
                 || (other_keycode == KC_R )
+                || (other_keycode == KC_C )
+                || (other_keycode == KC_V )
+                || (other_keycode == KC_X )
                 || (other_keycode == KC_W )
             ) {
                 return true;
@@ -260,8 +263,15 @@ bool achordion_chord(uint16_t tap_hold_keycode,
                 return true;
             }
             break;
+
+        case LSFT_T(KC_SPC):
+        case RSFT_T(KC_ENT):
+        case SYM_BSPC:
+        case NAV_TAB:
+            return true;
     }
 
+    if (other_record->event.key.row % (MATRIX_ROWS / 2) >= 4) { return true; }
 
     return achordion_opposite_hands(tap_hold_record, other_record);
 }
@@ -271,7 +281,7 @@ bool achordion_chord(uint16_t tap_hold_keycode,
  * Customize the Achordion tap-hold duration decision window.
  */
 uint16_t achordion_timout(uint16_t tap_hold_keycode) {
-    return 650;
+    return 550;
 }
 
 
