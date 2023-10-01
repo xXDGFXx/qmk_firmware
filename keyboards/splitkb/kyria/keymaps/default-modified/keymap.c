@@ -45,7 +45,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT(
      KC_GRV  , KC_Q ,  KC_W   ,  KC_E   ,   KC_R   ,   KC_T ,                                               KC_Y   ,  KC_U   ,  KC_I    ,  KC_O    , KC_P    , KC_PLUS ,
      CTL_ESC , KC_A ,  HOME_S ,  HOME_D ,   HOME_F ,   KC_G ,                                               KC_H   ,  HOME_J ,  HOME_K  ,  HOME_L  , KC_SCLN , CTL_QUOT,
-     KC_TILD , KC_Z ,  KC_X   ,  KC_C   ,   KC_V   ,   KC_B , KC_LBRC , ADJUST , FKEYS ,   KC_RBRC , KC_N   ,   KC_M   ,  KC_COMM , KC_DOT  , KC_SLSH, KC_MINUS,
+     KC_TILD , KC_Z ,  KC_X   ,  KC_C   ,   KC_V   ,   KC_B , KC_LBRC , ADJUST ,          FKEYS ,   KC_RBRC , KC_N   ,   KC_M   ,  KC_COMM , KC_DOT  , KC_SLSH, KC_MINUS,
                                 KC_MUTE , KC_LGUI  , NAV_TAB ,  LSFT_T(KC_SPC) , NAV   ,      NUMS , RSFT_T(KC_ENT) , SYM_BSPC  ,   KC_RGUI,  KC_APP
     ),
 
@@ -96,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |        |  GUI |  Alt | Ctrl | Shift|      |                              | PgDn |  ←   |   ↓  |   →  | VolDn| Insert |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |ScLck |  |      |      | Pause|M Prev|M Play|M Next|VolMut| PrtSc  |
+ * |        |      |      |      |      |      |      |ScLck |  |CpsLck|      | Pause|M Prev|M Play|M Next|VolMut| PrtSc  |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
@@ -105,7 +105,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_NAV] = LAYOUT(
       _______, _______, _______, _______, CTL_REDO, _______,                                     KC_PGUP, KC_HOME, KC_UP,   KC_END,  _______, KC_DEL,
       _______, KC_LGUI, KC_LSFT, KC_LCTL, KC_LALT, _______,                                     KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, _______, KC_INS,
-      _______, CTL_UNDO, CTL_CUT, CTL_COPY, CTL_PASTE, _______, _______, KC_SCRL, _______, _______, _______, _______, _______, _______, _______, KC_PSCR,
+      _______, CTL_UNDO, CTL_CUT, CTL_COPY, CTL_PASTE, _______, _______, KC_SCRL, KC_CAPS, _______, _______, _______, _______, _______, _______, KC_PSCR,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, LCTL(KC_0)
     ),
 
@@ -237,12 +237,13 @@ bool achordion_chord(uint16_t tap_hold_keycode,
 {
     switch (tap_hold_keycode) {
         case HOME_F:
+            // ALT + TAB
             if ( other_keycode == NAV_TAB) {
                 return true;
             }
             break;
 
-        case HOME_D: // CTRL + <special key>
+        case HOME_D: // CTRL + <combo key>
             if (
                 (other_keycode == KC_T)
                 || (other_keycode == KC_R )
@@ -257,17 +258,17 @@ bool achordion_chord(uint16_t tap_hold_keycode,
 
         case HOME_S:
             if (
-                ( other_keycode == KC_V )
-                || ( other_keycode == KC_G )
+                ( other_keycode == KC_V ) // VIM Select line
+                || ( other_keycode == KC_G ) // VIM Go to last line
             ) {
                 return true;
             }
             break;
 
-        case LSFT_T(KC_SPC):
-        case RSFT_T(KC_ENT):
-        case SYM_BSPC:
-        case NAV_TAB:
+        case LSFT_T(KC_SPC): // Hold-shift left-handed
+        case RSFT_T(KC_ENT): // Hold-shift right-handed
+        case SYM_BSPC: // Layer-tap right
+        case NAV_TAB: // Layer-tap left
             return true;
     }
 
@@ -281,7 +282,7 @@ bool achordion_chord(uint16_t tap_hold_keycode,
  * Customize the Achordion tap-hold duration decision window.
  */
 uint16_t achordion_timout(uint16_t tap_hold_keycode) {
-    return 550;
+    return ACHORDION_DEFAULT_TIMEOUT;
 }
 
 
@@ -296,6 +297,18 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t * record) {
     }
 }
 
+bool achordion_eager_mod(uint8_t mod) {
+    switch (mod) {
+        case MOD_LSFT:
+        case MOD_RSFT:
+        case MOD_LCTL:
+        case MOD_RCTL:
+            return true; // Eagerly apply Shift and Ctrl mods
+
+        default:
+            return false;
+    }
+}
 
 /* The default OLED and rotary encoder code can be found at the bottom of qmk_firmware/keyboards/splitkb/kyria/rev1/rev1.c
  * These default settings can be overriden by your own settings in your keymap.c
@@ -344,9 +357,9 @@ bool oled_task_user(void) {
 
         // Write host Keyboard LED Status to OLEDs
         led_t led_usb_state = host_keyboard_led_state();
-        oled_write_P(led_usb_state.num_lock    ? PSTR("[N] ") : PSTR(" "), false);
-        oled_write_P(led_usb_state.caps_lock   ? PSTR("[C] ") : PSTR(" "), false);
-        oled_write_P(led_usb_state.scroll_lock ? PSTR("[S] ") : PSTR(" "), false);
+        oled_write_P(led_usb_state.num_lock    ? PSTR("[N] ") : PSTR("    "), false);
+        oled_write_P(led_usb_state.caps_lock   ? PSTR("[C] ") : PSTR("    "), false);
+        oled_write_P(led_usb_state.scroll_lock ? PSTR("[S] ") : PSTR("    "), false);
         // render_luna(0, 13);
     } else {
         // clang-format of
