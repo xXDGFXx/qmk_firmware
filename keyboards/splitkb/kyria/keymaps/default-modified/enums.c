@@ -34,4 +34,12 @@ enum layers {
 #define CTL_MINS MT(MOD_RCTL, KC_MINUS)
 #define ALT_ENT  MT(MOD_LALT, KC_ENT)
 
+#define CTL_COPY LCTL(KC_C)
+#define CTL_PASTE LCTL(KC_V)
+#define CTL_CUT LCTL(KC_X)
+#define CTL_UNDO LCTL(KC_Z)
+#define CTL_REDO LCTL(KC_Y)
+
+#define NAV_TAB LT(_NAV, KC_TAB)
+#define SYM_BSPC LT(_SYM, KC_BSPC)
 #endif

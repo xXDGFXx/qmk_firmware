@@ -14,6 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#include "features/achordion.h"
+
 #include "enums.h"
 #ifdef OLED_ENABLE
 #include "encodermap.c"
@@ -43,8 +45,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT(
      KC_TAB  , KC_Q ,  KC_W   ,  KC_E   ,   KC_R   ,   KC_T ,                                               KC_Y   ,  KC_U   ,  KC_I    ,  KC_O    , KC_P    , KC_BSPC ,
      CTL_ESC , KC_A ,  HOME_S ,  HOME_D ,   HOME_F ,   KC_G ,                                               KC_H   ,  HOME_J ,  HOME_K  ,  HOME_L  , KC_SCLN , CTL_QUOT,
-     KC_LSFT , KC_Z ,  KC_X   ,  KC_C   ,   KC_V   ,   KC_B , KC_LBRC, ADJUST,   FKEYS  ,   KC_RBRC ,   KC_N   ,   KC_M   ,  KC_COMM , KC_DOT  , KC_SLSH, KC_RSFT,
-                                KC_MUTE , KC_LGUI,     KC_TAB, KC_SPC, NAV   ,     SYM  ,    KC_ENT , KC_BSPC  ,   KC_RGUI,  KC_APP
+     KC_LSFT , KC_Z ,  KC_X   ,  KC_C   ,   KC_V   ,   KC_B , KC_LBRC , ADJUST,   FKEYS  ,   KC_RBRC ,   KC_N   ,   KC_M   ,  KC_COMM , KC_DOT  , KC_SLSH, KC_RSFT,
+                                KC_MUTE , KC_LGUI  , NAV_TAB ,  KC_SPC , NAV   ,     SYM  ,    KC_ENT , SYM_BSPC  ,   KC_RGUI,  KC_APP
     ),
 
 /*
@@ -101,9 +103,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_NAV] = LAYOUT(
-      _______, _______, _______, _______, _______, _______,                                     KC_PGUP, KC_HOME, KC_UP,   KC_END,  _______, KC_DEL,
+      _______, _______, _______, _______, CTL_REDO, _______,                                     KC_PGUP, KC_HOME, KC_UP,   KC_END,  _______, KC_DEL,
       _______, KC_LGUI, KC_LSFT, KC_LCTL, KC_LALT, _______,                                     KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, _______, KC_INS,
-      _______, _______, _______, _______, _______, _______, _______, KC_SCRL, _______, _______, _______, _______, _______, _______, _______, KC_PSCR,
+      _______, CTL_UNDO, CTL_CUT, CTL_COPY, CTL_PASTE, _______, _______, KC_SCRL, _______, _______, _______, _______, _______, _______, _______, KC_PSCR,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, LCTL(KC_0)
     ),
 
@@ -122,12 +124,33 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_SYM] = LAYOUT(
-      KC_GRV ,   KC_1 ,   KC_2 ,   KC_3 ,   KC_4 ,   KC_5 ,                                       KC_6 ,   KC_7 ,   KC_8 ,   KC_9 ,   KC_0 , KC_EQL ,
-     KC_TILD , KC_EXLM,  LALT_T(KC_LBRC) , LCTL_T(KC_LPRN),  LALT_T(KC_LCBR), KC_EQL,      KC_PLUS, LALT_T(KC_LABK), RCTL_T(KC_RABK), RSFT_T(KC_COLN), KC_PIPE, KC_PLUS,
-     KC_PIPE , KC_BSLS, KC_RBRC, KC_RPRN, KC_RCBR, KC_UNDS, KC_LCBR, _______, _______, KC_RCBR, KC_MINUS, KC_UNDS, KC_COMM,  KC_DOT, KC_SLSH, KC_QUES,
+      KC_GRV ,   KC_1 ,   KC_2 ,   KC_3 ,   KC_4 ,   KC_5 ,                                         KC_6 ,   KC_7 ,   KC_8 ,   KC_9 ,   KC_0 , KC_EQL,
+     KC_TILD , KC_EXLM,  SYM_LSFT , SYM_LCTL,  SYM_LALT, KC_EQL,                              KC_PLUS, SYM_RALT, SYM_RCTL, SYM_RSFT, KC_COLN, KC_PIPE,
+     KC_PIPE , KC_AT, KC_RBRC, KC_RPRN, KC_RCBR, KC_UNDS, KC_LCBR, _______, _______, KC_RCBR, KC_MINUS, KC_UNDS, KC_COMM,  KC_DOT, KC_SLSH, KC_QUES,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
+
+/*
+ * Number Layer: Dedicated Number layer
+ *
+ * ,-------------------------------------------.                              ,-------------------------------------------.
+ * |        |   *  |   7  |   8  |   9  |   +  |                              |      |      |      |      |      |        |
+ * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+ * |        |   /  |   4  |   5  |   6  |   -  |                              |      |      |      |      |      |        |
+ * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * |        |   _  |   1  |   2  |   3  |   =  |      |      |  |      |      |      |      |      |      |      |        |
+ * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
+ *                        |      |   0  |   .   |  ,   |      |  |      |      |      |      |      |
+ *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        `----------------------------------'  `----------------------------------'
+ */
+     [_NUMS] = LAYOUT(
+       _______, KC_ASTR , KC_7, KC_8, KC_9, KC_PLUS ,                                     _______, _______, _______, _______, _______, KC_BSPC,
+       _______, KC_SLASH, KC_4, KC_5, KC_6, KC_MINUS,                                     _______, _______, _______, _______, _______, _______,
+       _______, KC_UNDS , KC_1, KC_2, KC_3, KC_EQL  , KC_COMM, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+                                _______, KC_0, KC_DOT, KC_SPC, KC_COMM, _______, KC_BSPC, _______, _______, _______
+     ),
 /*
  * Function Layer: Function keys
  *
@@ -191,6 +214,78 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 //     ),
 };
+
+
+bool process_record_user(uint16_t keycode, keyrecord_t * record) {
+    if ( !process_achordion(keycode, record) ) { return false; }
+    // Your macros ...
+    return true;
+}
+
+void matrix_scan_user(void) {
+    achordion_task();
+}
+
+/**
+ * Achordion control for resolving whether the key combinations pressed are tap hold.
+ * Defaults to rejecting same-hand combinations
+ */
+bool achordion_chord(uint16_t tap_hold_keycode,
+                     keyrecord_t * tap_hold_record,
+                     uint16_t other_keycode,
+                     keyrecord_t * other_record)
+{
+    switch (tap_hold_keycode) {
+        case HOME_F:
+            if ( other_keycode == NAV_TAB) {
+                return true;
+            }
+            break;
+
+        case HOME_D:
+            if (
+                (other_keycode == KC_T)
+                || (other_keycode == KC_R )
+                || (other_keycode == KC_W )
+            ) {
+                return true;
+            }
+            break;
+
+        case HOME_S:
+            if (
+                ( other_keycode == KC_V )
+                || ( other_keycode == KC_G )
+            ) {
+                return true;
+            }
+            break;
+    }
+
+
+    return achordion_opposite_hands(tap_hold_record, other_record);
+}
+
+
+/**
+ * Customize the Achordion tap-hold duration decision window.
+ */
+uint16_t achordion_timout(uint16_t tap_hold_keycode) {
+    return 650;
+}
+
+
+uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t * record) {
+    switch (keycode) {
+        case HOME_J:
+        case HOME_K:
+        case HOME_L:
+            return QUICK_TAP_TERM;
+        default:
+            return 0;
+    }
+}
+
 
 /* The default OLED and rotary encoder code can be found at the bottom of qmk_firmware/keyboards/splitkb/kyria/rev1/rev1.c
  * These default settings can be overriden by your own settings in your keymap.c
