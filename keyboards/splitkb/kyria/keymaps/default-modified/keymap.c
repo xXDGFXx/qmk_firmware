@@ -50,45 +50,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
 /*
- * Base Layer: Dvorak
- *
- * ,-------------------------------------------.                              ,-------------------------------------------.
- * |  Tab   | ' "  | , <  | . >  |   P  |   Y  |                              |   F  |   G  |   C  |   R  |   L  |  Bksp  |
- * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |Ctrl/Esc|   A  |   O  |   E  |   U  |   I  |                              |   D  |   H  |   T  |   N  |   S  |Ctrl/- _|
- * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | LShift | ; :  |   Q  |   J  |   K  |   X  | [ {  |CapsLk|  |F-keys|  ] } |   B  |   M  |   W  |   V  |   Z  | RShift |
- * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |Adjust| LGUI | LAlt/| Space| Nav  |  | Sym  | Space| AltGr| RGUI | Menu |
- *                        |      |      | Enter|      |      |  |      |      |      |      |      |
- *                        `----------------------------------'  `----------------------------------'
-    [_DVORAK] = LAYOUT(
-     KC_TAB  ,KC_QUOTE,KC_COMM,  KC_DOT,   KC_P ,   KC_Y ,                                        KC_F,   KC_G ,  KC_C ,   KC_R ,  KC_L , KC_BSPC,
-     CTL_ESC , KC_A ,  KC_O   ,  KC_E  ,   KC_U ,   KC_I ,                                        KC_D,   KC_H ,  KC_T ,   KC_N ,  KC_S , CTL_MINS,
-     KC_LSFT ,KC_SCLN, KC_Q   ,  KC_J  ,   KC_K ,   KC_X , KC_LBRC,KC_CAPS,     FKEYS  , KC_RBRC, KC_B,   KC_M ,  KC_W ,   KC_V ,  KC_Z , KC_RSFT,
-                                 ADJUST, KC_LGUI, ALT_ENT, KC_SPC , NAV   ,     SYM    , KC_SPC ,KC_RALT, KC_RGUI, KC_APP
-    ),
-
- * Base Layer: Colemak DH
- *
- * ,-------------------------------------------.                              ,-------------------------------------------.
- * |  Tab   |   Q  |   W  |   F  |   P  |   B  |                              |   J  |   L  |   U  |   Y  | ;  : |  Bksp  |
- * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |Ctrl/Esc|   A  |   R  |   S  |   T  |   G  |                              |   M  |   N  |   E  |   I  |   O  |Ctrl/' "|
- * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   D  |   V  | [ {  |CapsLk|  |F-keys|  ] } |   K  |   H  | ,  < | . >  | /  ? | RShift |
- * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |Adjust| LGUI | LAlt/| Space| Nav  |  | Sym  | Space| AltGr| RGUI | Menu |
- *                        |      |      | Enter|      |      |  |      |      |      |      |      |
- *                        `----------------------------------'  `----------------------------------'
-    [_COLEMAK_DH] = LAYOUT(
-     KC_TAB  , KC_Q ,  KC_W   ,  KC_F  ,   KC_P ,   KC_B ,                                        KC_J,   KC_L ,  KC_U ,   KC_Y ,KC_SCLN, KC_BSPC,
-     CTL_ESC , KC_A ,  KC_R   ,  KC_S  ,   KC_T ,   KC_G ,                                        KC_M,   KC_N ,  KC_E ,   KC_I ,  KC_O , CTL_QUOT,
-     KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_D ,   KC_V , KC_LBRC,KC_CAPS,     FKEYS  , KC_RBRC, KC_K,   KC_H ,KC_COMM, KC_DOT ,KC_SLSH, KC_RSFT,
-                                 ADJUST, KC_LGUI, ALT_ENT, KC_SPC , NAV   ,     SYM    , KC_SPC ,KC_RALT, KC_RGUI, KC_APP
-    ),
-*/
-/*
  * Nav Layer: Media, navigation
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
@@ -113,20 +74,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Sym Layer: Numbers and symbols
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |    `   |  1   |  2   |  3   |  4   |  5   |                              |   6  |  7   |  8   |  9   |  0   |   =    |
+ * |    `   |  !   |  @   |  #   |  $   |  %   |                              |   ^  |  &   |  *   |  "   |  '   |   '    |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |    ~   |  !   |  @   |  #   |  $   |  %   |                              |   ^  |  &   |  *   |  (   |  )   |   +    |
+ * |    ~   |  ~   |  [   |  (   |  {   |  =   |                              |   +  |  _   |  <   |  >   |  :   |   "    |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |    |   |   \  |  :   |  ;   |  -   |  [   |  {   |      |  |      |   }  |   ]  |  _   |  ,   |  .   |  /   |   ?    |
+ * |    |   |  `   |  ]   |  )   |  }   |  "   |  {   |      |  |      |   }  |   -  |  |   |  ,   |  .   |  /   |   ?    |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_SYM] = LAYOUT(
-      KC_GRV ,   KC_EXLM ,   KC_AT ,   KC_HASH ,   KC_DOLLAR ,   KC_PERCENT ,                                         KC_CIRC ,   KC_AMPERSAND ,   KC_ASTERISK ,   KC_9 ,   KC_0 , KC_EQL,
-     KC_TILD , KC_EXLM,  KC_LBRC , KC_LPRN,  KC_LCBR, KC_EQL,                              KC_PLUS, KC_UNDS, KC_LABK, KC_RABK, KC_COLN, KC_PIPE,
-     KC_PIPE , KC_AT, KC_RBRC, KC_RPRN, KC_RCBR, KC_UNDS, KC_LCBR, _______, _______, KC_HASH, KC_MINUS, KC_UNDS, KC_COMM,  KC_DOT, KC_SLSH, KC_QUES,
+      KC_GRV  , KC_EXLM , KC_AT   , KC_HASH , KC_DLR  , KC_PERC ,                                     KC_CIRC , KC_AMPR , KC_ASTR , KC_DQT  , KC_QUOTE, KC_QUOTE,
+      KC_PIPE , KC_GRV  , KC_LBRC , KC_LPRN , KC_LCBR , KC_EQL  ,                                     KC_PLUS , KC_UNDS , KC_LABK , KC_RABK , KC_COLN , KC_DQT  ,
+      KC_TILD , KC_TILD , KC_RBRC , KC_RPRN , KC_RCBR , KC_QUES , KC_LCBR, _______, _______, KC_RCBR, KC_MINUS, KC_PIPE , KC_COMM , KC_DOT  , KC_SLSH , KC_QUES ,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
@@ -344,6 +305,9 @@ bool oled_task_user(void) {
                 break;
             case _SYM:
                 oled_write_P(PSTR("Symbol\n"), false);
+                break;
+            case _NUMS:
+                oled_write_P(PSTR("Numbers\n"), false);
                 break;
             case _FUNCTION:
                 oled_write_P(PSTR("Function\n"), false);
