@@ -176,6 +176,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //     ),
 };
 
+uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t * record) {
+    switch (keycode) {
+        // Vim Navigation keys
+        case HOME_J:
+        case HOME_K:
+        case HOME_L:
+            return QUICK_TAP_TERM;
+        default:
+            return 0;
+    }
+}
+
 
 bool process_record_user(uint16_t keycode, keyrecord_t * record) {
     if ( !process_achordion(keycode, record) ) { return false; }
@@ -217,6 +229,17 @@ bool achordion_chord(uint16_t tap_hold_keycode,
             }
             break;
 
+        case HOME_K:
+            if (
+                (other_keycode == KC_N)
+                || (other_keycode == KC_Y )
+                || (other_keycode == KC_U )
+                || (other_keycode == KC_O )
+            ) {
+                return true;
+            }
+            break;
+
         case HOME_S:
             if (
                 ( other_keycode == KC_V ) // VIM Select line
@@ -246,17 +269,6 @@ uint16_t achordion_timout(uint16_t tap_hold_keycode) {
     return ACHORDION_DEFAULT_TIMEOUT;
 }
 
-
-uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t * record) {
-    switch (keycode) {
-        case HOME_J:
-        case HOME_K:
-        case HOME_L:
-            return QUICK_TAP_TERM;
-        default:
-            return 0;
-    }
-}
 
 bool achordion_eager_mod(uint8_t mod) {
     switch (mod) {
