@@ -32,21 +32,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Base Layer: QWERTY
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |  Tab   |   Q  |   W  |   E  |   R  |   T  |                              |   Y  |   U  |   I  |   O  |   P  |  Bksp  |
+ * |    `   |   Q  |   W  |   E  |   R  |   T  |                              |   Y  |   U  |   I  |   O  |   P  |    +   |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |Ctrl/Esc|   A  |   S  |   D  |   F  |   G  |                              |   H  |   J  |   K  |   L  | ;  : |Ctrl/' "|
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   V  |   B  | [ {  |Adjust|  |  Func |  ] } |   N  |   M  | ,  < | . >  | /  ? | RShift |
+ * |    ~   |   Z  |   X  |   C  |   V  |   B  | [ {  |Adjust|  |  Func |  ] } |   N  |   M  | ,  < | . > | /  ? |    -   |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        | Mute | LGUI | LAlt | Space| Nav  |  | Sym  | Enter | AltGr| RGUI | Menu |
- *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        | Mute | LGUI | Tab/ | Space/| Nav |  | Sym  | Enter/| BSPC/|Repeat| Menu |
+ *                        |      |      | Nav  | LShift|     |  |      | RShift| SYM  |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_QWERTY] = LAYOUT(
      KC_GRV  , KC_Q ,  KC_W   ,  KC_E   ,   KC_R   ,   KC_T ,                                               KC_Y   ,  KC_U   ,  KC_I    ,  KC_O    , KC_P    , KC_PLUS ,
      CTL_ESC , KC_A ,  HOME_S ,  HOME_D ,   HOME_F ,   KC_G ,                                               KC_H   ,  HOME_J ,  HOME_K  ,  HOME_L  , KC_SCLN , CTL_QUOT,
      KC_TILD , KC_Z ,  KC_X   ,  KC_C   ,   KC_V   ,   KC_B , KC_LBRC , ADJUST ,          FKEYS ,   KC_RBRC , KC_N   ,   KC_M   ,  KC_COMM , KC_DOT  , KC_SLSH, KC_MINUS,
-                                KC_MUTE , KC_LGUI  , NAV_TAB ,  LSFT_T(KC_SPC) , NAV   ,      NUMS , RSFT_T(KC_ENT) , SYM_BSPC  ,   KC_RGUI,  KC_APP
+                                KC_MUTE , KC_LGUI  , NAV_TAB ,  LSFT_T(KC_SPC) , NAV   ,      NUMS , RSFT_T(KC_ENT) , SYM_BSPC  , QK_REP,  KC_APP
     ),
 
 /*
@@ -102,7 +102,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * |        |   _  |   1  |   2  |   3  |   =  |      |      |  |      |      |      |      |      |      |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |   0  |   .   |  ,   |      |  |      |      |      |      |      |
+ *                        |      |   0  |   .  |   ,  |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
