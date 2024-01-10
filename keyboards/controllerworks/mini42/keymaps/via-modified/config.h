@@ -21,6 +21,12 @@
 /*
  * Mod-tap adjustments
  */
+#define DYNAMIC_KEYMAP_LAYER_COUNT 6
+#define TAPPING_TOGGLE 2
+
+/*
+ * Mod-tap adjustments
+ */
 #define QUICK_TAP_TERM 120
 #define TAPPING_TERM 200
 #define PERMISSIVE_HOLD
@@ -29,7 +35,19 @@
  * Caps Word Configurations
  */
 #define CAPS_WORD_IDLE_TIMEOUT 2500
-#define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
+#define CAPS_WORD_INVERT_ON_SHIFT
+
+/*
+ * Achordion configurations
+ */
+#define ACHORDION_DEFAULT_TIMEOUT 200
+
+/*
+ * One-shot Layer
+ */
+
+#define ONESHOT_TIMEOUT 1200
+
 
 #ifdef RGB_MATRIX_ENABLE
 #    define RGB_MATRIX_SPLIT \

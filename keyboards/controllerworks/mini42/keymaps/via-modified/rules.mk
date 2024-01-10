@@ -1,5 +1,9 @@
 VIA_ENABLE = yes
-WPM_ENABLE = yes
-CAPS_WORD_ENABLE = yes
 
-# SRC += features/achordion.c
+WPM_ENABLE = yes
+MOUSEKEY_ENABLE = yes     # Mouse keys
+CAPS_WORD_ENABLE = yes
+REPEAT_KEY_ENABLE = yes
+COMBO_ENABLE = yes
+
+SRC += features/achordion.c
