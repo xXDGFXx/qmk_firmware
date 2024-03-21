@@ -1,16 +1,6 @@
 #ifndef KEYMAP_ENUMS
 #define KEYMAP_ENUMS
 
-enum layers {
-    _QWERTY = 0,
-    _NAV,
-    _SYM,
-    _FUNCTION,
-    _ADJUST,
-    _NUMS,
-};
-
-
 // Aliases for readability
 #define QWERTY   DF(_QWERTY)
 
@@ -54,4 +44,15 @@ enum layers {
 #define SYM_BSPC LT(_SYM, KC_BSPC)
 #define LSFT_SPC LSFT_T(KC_SPC)
 #define NUM_ENT LT(_NUMS, KC_ENT)
+
+enum layers {
+    _QWERTY = 0,
+    _NAV,
+    _SYM,
+    _FUNCTION,
+    _ADJUST,
+    _NUMS,
+};
+
+
 #endif
