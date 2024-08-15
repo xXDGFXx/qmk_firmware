@@ -52,7 +52,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_NAV] = LAYOUT_split_3x6_3(
       _______,    KC_ESC,       _______,       _______,      CTL_REDO, _______,             KC_PGUP, KC_HOME,   KC_UP,  KC_END, _______,  KC_DEL,
-      _______,   KC_LGUI, OSM(MOD_LSFT), OSM(MOD_LCTL), OSM(MOD_LALT), _______,             KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, _______,  KC_INS,
+      _______,   KC_LGUI, KC_LSFT, KC_LCTL, KC_LALT, _______,             KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, _______,  KC_INS,
       _______,  CTL_UNDO,       CTL_CUT,      CTL_COPY,     CTL_PASTE, _______,             _______, KC_BSPC,  KC_DEL, _______, _______, KC_PSCR,
                                                         _______, _______, _______,       _______, _______, _______
     ),
