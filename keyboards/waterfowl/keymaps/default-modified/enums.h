@@ -11,6 +11,7 @@
 #define NUMS     MO(_NUMS)
 
 // Left-hand home row mods
+#define HOME_A LGUI_T(KC_S)
 #define HOME_S LSFT_T(KC_S)
 #define HOME_D LCTL_T(KC_D)
 #define HOME_F LALT_T(KC_F)
@@ -20,9 +21,10 @@
 #define SYM_LALT LALT_T(KC_LCBR)
 
 // Right-hand home row mods
-#define HOME_J LALT_T(KC_J)
-#define HOME_K RCTL_T(KC_K)
-#define HOME_L RSFT_T(KC_L)
+#define HOME_J    LALT_T(KC_J)
+#define HOME_K    RCTL_T(KC_K)
+#define HOME_L    RSFT_T(KC_L)
+#define HOME_SCLN RGUI_T(KC_SCLN)
 
 #define SYM_RSFT RSFT_T(KC_UNDS)
 #define SYM_RCTL RCTL_T(KC_LABK)
@@ -44,6 +46,10 @@
 #define SYM_BSPC LT(_SYM, KC_BSPC)
 #define LSFT_SPC LSFT_T(KC_SPC)
 #define NUM_ENT LT(_NUMS, KC_ENT)
+#define MED_ESC LT(_MEDIA, KC_ESC)
+
+#define SFT_PSCR LSFT(KC_PSCR)
+#define ALT_PSCR LALT(KC_PSCR)
 
 enum layers {
     _QWERTY = 0,
@@ -51,6 +57,7 @@ enum layers {
     _SYM,
     _FUNCTION,
     _NUMS,
+    _MEDIA,
 };
 
 
