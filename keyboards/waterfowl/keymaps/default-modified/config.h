@@ -39,6 +39,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PERMISSIVE_HOLD
 
 /*
+ * Tap dance adjustments
+ */
+
+#define TAPPING_TERM 180
+
+/*
  * Caps Word Configurations
  */
 #define CAPS_WORD_IDLE_TIMEOUT 2500
