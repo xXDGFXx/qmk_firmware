@@ -20,21 +20,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 
 #include "features/achordion.h"
+
 #include "bongo.h"
 
 #include "enums.h"
 
+#include "combos.c"
+#include "tapdance.c"
+
+
 char wpm[42];
-
-const uint16_t PROGMEM capsword_combo[] = {KC_G, KC_H, COMBO_END};
-const uint16_t PROGMEM capslock_combo[] = {KC_U, KC_I, KC_O, COMBO_END};
-const uint16_t PROGMEM osl_fnc_combo[] = {NAV_TAB, SYM_BSPC, COMBO_END};
-
-combo_t key_combos[] = {
-    COMBO(capsword_combo, QK_CAPS_WORD_TOGGLE),
-    COMBO(capslock_combo, KC_CAPS),
-    COMBO(osl_fnc_combo, OSL(_FUNCTION))
-};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT_split_3x6_3(
@@ -45,16 +40,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_TILD,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,KC_MINUS,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, NAV_TAB,LSFT_SPC,    NUM_ENT, SYM_BSPC, KC_DEL
+                                          TD(TD_GUI_ESC), NAV_TAB,LSFT_SPC,    NUM_ENT, SYM_BSPC, KC_DEL
                                       //`--------------------------'  `--------------------------'
 
   ),
 
     [_NAV] = LAYOUT_split_3x6_3(
-      _______,    KC_ESC,       _______,       _______,      CTL_REDO, _______,             KC_PGUP, KC_HOME,   KC_UP,  KC_END, _______,  KC_DEL,
+      MO(_ADJUST),    KC_ESC,       _______,       _______,      CTL_REDO, _______,             KC_PGUP, KC_HOME,   KC_UP,  KC_END, _______,  KC_DEL,
       _______,   KC_LGUI, KC_LSFT, KC_LCTL, KC_LALT, _______,             KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, _______,  KC_INS,
       _______,  CTL_UNDO,       CTL_CUT,      CTL_COPY,     CTL_PASTE, _______,             _______, KC_BSPC,  KC_DEL, _______, _______, KC_PSCR,
-                                                        _______, _______, _______,       _______, _______, _______
+                                                        _______, _______, _______,       _______, MO(_FUNCTION), _______
     ),
 
 /*
@@ -75,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_GRV  , KC_EXLM , KC_AT  , KC_HASH , KC_DLR  , KC_PERC ,       KC_CIRC , KC_AMPR , KC_ASTR , KC_DQT   , KC_QUOTE , KC_QUOTE,
       KC_PIPE , KC_GRV  , KC_LBRC , KC_LPRN , KC_LCBR , KC_EQL  ,       KC_PLUS , KC_UNDS , KC_LABK , KC_RABK  , KC_COLN  , KC_DQT  ,
       KC_TILD , KC_TILD , KC_RBRC , KC_RPRN , KC_RCBR , KC_QUES ,       KC_MINUS, KC_PIPE , KC_COMM , KC_BSLS , KC_SLSH  , KC_QUES ,
-                                  _______, _______, _______,          _______, _______, _______
+                                  _______, MO(_FUNCTION), _______,          _______, _______, _______
     ),
 
 
