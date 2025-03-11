@@ -1,4 +1,4 @@
-// Copyright 2022-2024 Google LLC
+// Copyright 2022-2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -49,145 +49,146 @@
  * <https://getreuer.info/posts/keyboards/achordion>
  */
 
-#pragma once
+ #pragma once
 
-#include "quantum.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/**
- * Handler function for Achordion.
- *
- * Call this function from `process_record_user()` as
- *
- *     #include "features/achordion.h"
- *
- *     bool process_record_user(uint16_t keycode, keyrecord_t* record) {
- *       if (!process_achordion(keycode, record)) { return false; }
- *       // Your macros...
- *       return true;
- *     }
- */
-bool process_achordion(uint16_t keycode, keyrecord_t* record);
-
-/**
- * Matrix task function for Achordion.
- *
- * Call this function from `matrix_scan_user()` as
- *
- *     void matrix_scan_user(void) {
- *       achordion_task();
- *     }
- */
-void achordion_task(void);
-
-/**
- * Optional callback to customize which key chords are considered "held".
- *
- * In your keymap.c, define the callback
- *
- *     bool achordion_chord(uint16_t tap_hold_keycode,
- *                          keyrecord_t* tap_hold_record,
- *                          uint16_t other_keycode,
- *                          keyrecord_t* other_record) {
- *        // Conditions...
- *     }
- *
- * This callback is called if while `tap_hold_keycode` is pressed,
- * `other_keycode` is pressed. Return true if the tap-hold key should be
- * considered held, or false to consider it tapped.
- *
- * @param tap_hold_keycode Keycode of the tap-hold key.
- * @param tap_hold_record keyrecord_t from the tap-hold press event.
- * @param other_keycode Keycode of the other key.
- * @param other_record keyrecord_t from the other key's press event.
- * @return True if the tap-hold key should be considered held.
- */
-bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
-                     uint16_t other_keycode, keyrecord_t* other_record);
-
-/**
- * Optional callback to define a timeout duration per keycode.
- *
- * In your keymap.c, define the callback
- *
- *     uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
- *       // ...
- *     }
- *
- * The callback determines Achordion's timeout duration for `tap_hold_keycode`
- * in units of milliseconds. The timeout be in the range 0 to 32767 ms (upper
- * bound is due to 16-bit timer limitations). Use a timeout of 0 to bypass
- * Achordion.
- *
- * @param tap_hold_keycode Keycode of the tap-hold key.
- * @return Timeout duration in milliseconds in the range 0 to 32767.
- */
-uint16_t achordion_timeout(uint16_t tap_hold_keycode);
-
-/**
- * Optional callback defining which mods are "eagerly" applied.
- *
- * This callback defines  which mods are "eagerly" applied while a mod-tap
- * key is still being settled. This is helpful to reduce delay particularly when
- * using mod-tap keys with an external mouse.
- *
- * Define this callback in your keymap.c. The default callback is eager for
- * Shift and Ctrl, and not for Alt and GUI:
- *
- *     bool achordion_eager_mod(uint8_t mod) {
- *       return (mod & (MOD_LALT | MOD_LGUI)) == 0;
- *     }
- *
- * @note `mod` should be compared with `MOD_` prefixed codes, not `KC_` codes,
- * described at <https://docs.qmk.fm/mod_tap>.
- *
- * @param mod Modifier `MOD_` code.
- * @return True if the modifier should be eagerly applied.
- */
-bool achordion_eager_mod(uint8_t mod);
-
-/**
- * Returns true if the args come from keys on opposite hands.
- *
- * @param tap_hold_record keyrecord_t from the tap-hold key's event.
- * @param other_record keyrecord_t from the other key's event.
- * @return True if the keys are on opposite hands.
- */
-bool achordion_opposite_hands(const keyrecord_t* tap_hold_record,
-                              const keyrecord_t* other_record);
-
-/**
- * Suppress tap-hold mods within a *typing streak* by defining
- * ACHORDION_STREAK. This can help preventing accidental mod
- * activation when performing a fast tapping sequence.
- * This is inspired by
- * https://sunaku.github.io/home-row-mods.html#typing-streaks
- *
- * Enable with:
- *
- *    #define ACHORDION_STREAK
- *
- * Adjust the maximum time between key events before modifiers can be enabled
- * by defining the following callback in your keymap.c:
- *
- *    uint16_t achordion_streak_chord_timeout(
- *        uint16_t tap_hold_keycode, uint16_t next_keycode) {
- *      return 200;  // Default of 200 ms.
- *    }
- */
-#ifdef ACHORDION_STREAK
-uint16_t achordion_streak_chord_timeout(uint16_t tap_hold_keycode,
-                                        uint16_t next_keycode);
-
-bool achordion_streak_continue(uint16_t keycode);
-
-/** @deprecated Use `achordion_streak_chord_timeout()` instead. */
-uint16_t achordion_streak_timeout(uint16_t tap_hold_keycode);
-#endif
-
-#ifdef __cplusplus
-}
-#endif
+ #include "quantum.h"
+ 
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+ 
+ /**
+  * Handler function for Achordion.
+  *
+  * Call this function from `process_record_user()` as
+  *
+  *     #include "features/achordion.h"
+  *
+  *     bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+  *       if (!process_achordion(keycode, record)) { return false; }
+  *       // Your macros...
+  *       return true;
+  *     }
+  */
+ bool process_achordion(uint16_t keycode, keyrecord_t* record);
+ 
+ /**
+  * Matrix task function for Achordion.
+  *
+  * Call this function from `housekeeping_task_user()` as
+  *
+  *     void housekeeping_task_user(void) {
+  *       achordion_task();
+  *     }
+  */
+ void achordion_task(void);
+ 
+ /**
+  * Optional callback to customize which key chords are considered "held".
+  *
+  * In your keymap.c, define the callback
+  *
+  *     bool achordion_chord(uint16_t tap_hold_keycode,
+  *                          keyrecord_t* tap_hold_record,
+  *                          uint16_t other_keycode,
+  *                          keyrecord_t* other_record) {
+  *        // Conditions...
+  *     }
+  *
+  * This callback is called if while `tap_hold_keycode` is pressed,
+  * `other_keycode` is pressed. Return true if the tap-hold key should be
+  * considered held, or false to consider it tapped.
+  *
+  * @param tap_hold_keycode Keycode of the tap-hold key.
+  * @param tap_hold_record keyrecord_t from the tap-hold press event.
+  * @param other_keycode Keycode of the other key.
+  * @param other_record keyrecord_t from the other key's press event.
+  * @return True if the tap-hold key should be considered held.
+  */
+ bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
+                      uint16_t other_keycode, keyrecord_t* other_record);
+ 
+ /**
+  * Optional callback to define a timeout duration per keycode.
+  *
+  * In your keymap.c, define the callback
+  *
+  *     uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
+  *       // ...
+  *     }
+  *
+  * The callback determines Achordion's timeout duration for `tap_hold_keycode`
+  * in units of milliseconds. The timeout be in the range 0 to 32767 ms (upper
+  * bound is due to 16-bit timer limitations). Use a timeout of 0 to bypass
+  * Achordion.
+  *
+  * @param tap_hold_keycode Keycode of the tap-hold key.
+  * @return Timeout duration in milliseconds in the range 0 to 32767.
+  */
+ uint16_t achordion_timeout(uint16_t tap_hold_keycode);
+ 
+ /**
+  * Optional callback defining which mods are "eagerly" applied.
+  *
+  * This callback defines  which mods are "eagerly" applied while a mod-tap
+  * key is still being settled. This is helpful to reduce delay particularly when
+  * using mod-tap keys with an external mouse.
+  *
+  * Define this callback in your keymap.c. The default callback is eager for
+  * Shift and Ctrl, and not for Alt and GUI:
+  *
+  *     bool achordion_eager_mod(uint8_t mod) {
+  *       return (mod & (MOD_LALT | MOD_LGUI)) == 0;
+  *     }
+  *
+  * @note `mod` should be compared with `MOD_` prefixed codes, not `KC_` codes,
+  * described at <https://docs.qmk.fm/mod_tap>.
+  *
+  * @param mod Modifier `MOD_` code.
+  * @return True if the modifier should be eagerly applied.
+  */
+ bool achordion_eager_mod(uint8_t mod);
+ 
+ /**
+  * Returns true if the args come from keys on opposite hands.
+  *
+  * @param tap_hold_record keyrecord_t from the tap-hold key's event.
+  * @param other_record keyrecord_t from the other key's event.
+  * @return True if the keys are on opposite hands.
+  */
+ bool achordion_opposite_hands(const keyrecord_t* tap_hold_record,
+                               const keyrecord_t* other_record);
+ 
+ /**
+  * Suppress tap-hold mods within a *typing streak* by defining
+  * ACHORDION_STREAK. This can help preventing accidental mod
+  * activation when performing a fast tapping sequence.
+  * This is inspired by
+  * https://sunaku.github.io/home-row-mods.html#typing-streaks
+  *
+  * Enable with:
+  *
+  *    #define ACHORDION_STREAK
+  *
+  * Adjust the maximum time between key events before modifiers can be enabled
+  * by defining the following callback in your keymap.c:
+  *
+  *    uint16_t achordion_streak_chord_timeout(
+  *        uint16_t tap_hold_keycode, uint16_t next_keycode) {
+  *      return 200;  // Default of 200 ms.
+  *    }
+  */
+ #ifdef ACHORDION_STREAK
+ uint16_t achordion_streak_chord_timeout(uint16_t tap_hold_keycode,
+                                         uint16_t next_keycode);
+ 
+ bool achordion_streak_continue(uint16_t keycode);
+ 
+ /** @deprecated Use `achordion_streak_chord_timeout()` instead. */
+ uint16_t achordion_streak_timeout(uint16_t tap_hold_keycode);
+ #endif
+ 
+ #ifdef __cplusplus
+ }
+ #endif
+ 
