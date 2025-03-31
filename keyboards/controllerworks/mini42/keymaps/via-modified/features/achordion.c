@@ -1,4 +1,4 @@
-// Copyright 2022-2024 Google LLC
+// Copyright 2022-2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,6 +21,9 @@
  */
 
 #include "achordion.h"
+
+#pragma message \
+    "Achordion has evolved into core QMK feature Chordal Hold! To use it, update your QMK set up and see https://docs.qmk.fm/tap_hold#chordal-hold"
 
 #if !defined(IS_QK_MOD_TAP)
 // Attempt to detect out-of-date QMK installation, which would fail with
@@ -176,12 +179,12 @@ bool process_achordion(uint16_t keycode, keyrecord_t* record) {
         if (is_mt) {  // Apply mods immediately if they are "eager."
           const uint8_t mod = mod_config(QK_MOD_TAP_GET_MODS(keycode));
           if (
-#if defined(CAPS_WORD_ENABLE) && defined(CAPS_WORD_INVERT_ON_SHIFT)
-              // Since eager mods bypass normal event handling, eager Shift does
-              // not work with CAPS_WORD_INVERT_ON_SHIFT. So if this option is
-              // enabled, we don't apply Shift eagerly when Caps Word is on.
+#if defined(CAPS_WORD_ENABLE)
+              // Since eager mods bypass normal event handling, Caps Word does
+              // not work as expected with eager Shift. So we don't apply Shift
+              // eagerly while Caps Word is on.
               !(is_caps_word_on() && (mod & MOD_LSFT) != 0) &&
-#endif  // defined(CAPS_WORD_ENABLE) && defined(CAPS_WORD_INVERT_ON_SHIFT)
+#endif  // defined(CAPS_WORD_ENABLE)
               achordion_eager_mod(mod)) {
             eager_mods = mod;
             process_eager_mods_action();
@@ -261,7 +264,7 @@ bool process_achordion(uint16_t keycode, keyrecord_t* record) {
       // Edge case involving LT + Repeat Key: in a sequence of "LT down, other
       // down" where "other" is on the other layer in the same position as
       // Repeat or Alternate Repeat, the repeated keycode is set instead of the
-      // the one on the switched-to layer. Here we correct that.
+      // one on the switched-to layer. Here we correct that.
       if (get_repeat_key_count() != 0 && IS_QK_LAYER_TAP(tap_hold_keycode)) {
         record->keycode = KC_NO;  // Forget the repeated keycode.
         clear_weak_mods();
@@ -381,3 +384,4 @@ achordion_streak_timeout(uint16_t tap_hold_keycode) {
 #endif
 
 #endif  // version check
+

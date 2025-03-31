@@ -26,19 +26,19 @@
  * Mod-tap adjustments
  */
 #define QUICK_TAP_TERM 120
-#define TAPPING_TERM 200
+#define TAPPING_TERM 175
 #define PERMISSIVE_HOLD
 
 /*
  * Caps Word Configurations
  */
-#define CAPS_WORD_IDLE_TIMEOUT 2500
+#define CAPS_WORD_IDLE_TIMEOUT 1500
 #define CAPS_WORD_INVERT_ON_SHIFT
 
 /*
  * Achordion configurations
  */
-#define ACHORDION_DEFAULT_TIMEOUT 200
+#define ACHORDION_DEFAULT_TIMEOUT 175
 
 /*
  * One-shot Layer
